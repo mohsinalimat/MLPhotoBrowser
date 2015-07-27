@@ -146,7 +146,9 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
     [super viewDidAppear:animated];
     NSAssert(self.dataSource, @"你没成为数据源代理");
     
-    [self showToView];
+    if (self.status != UIViewAnimationAnimationStatusNotAnimation){
+        [self showToView];
+    }
 }
 
 - (void)dealloc{
@@ -501,17 +503,25 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
     
     CGFloat xScale = boundsSize.width / imageSize.width;    // the scale needed to perfectly fit the image width-wise
     CGFloat yScale = boundsSize.height / imageSize.height;  // the scale needed to perfectly fit the image height-wise
-    CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
+    CGFloat minScale = MIN(xScale, yScale);
+    CGFloat maxScale = MAX(xScale, yScale);
+    // use minimum of these to allow the image to become fully visible
     // Image is smaller than screen so no zooming!
     if (xScale >= 1 && yScale >= 1) {
         minScale = MIN(xScale, yScale);
     }
     
-    if (minScale >= 3) {
-        minScale = 3;
-    }
     
-    CGRect frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
+    CGRect frameToCenter = CGRectZero;
+    if (xScale >= yScale) {
+        frameToCenter = CGRectMake(0, 0, imageSize.width * maxScale, imageSize.height * maxScale);
+        
+    }else {
+        if (minScale >= 3) {
+            minScale = 3;
+        }
+        frameToCenter = CGRectMake(0, 0, imageSize.width * minScale, imageSize.height * minScale);
+    }
     
     // Horizontally
     if (frameToCenter.size.width < boundsSize.width) {

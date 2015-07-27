@@ -14,6 +14,7 @@
 typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
     UIViewAnimationAnimationStatusZoom = 0, // 放大缩小
     UIViewAnimationAnimationStatusFade, // 淡入淡出
+    UIViewAnimationAnimationStatusNotAnimation, // 没有动画
 };
 
 @class MLPhotoBrowserViewController;
