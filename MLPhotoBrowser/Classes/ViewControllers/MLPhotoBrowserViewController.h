@@ -96,7 +96,7 @@ typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
 
 // @function
 // 展示控制器
-- (void)show;
+- (void)showPickerVc:(UIViewController *)vc;
 // 刷新数据
 - (void)reloadData;
 @end
