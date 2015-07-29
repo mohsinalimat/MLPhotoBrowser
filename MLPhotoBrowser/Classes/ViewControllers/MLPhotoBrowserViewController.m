@@ -514,7 +514,6 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
         minScale = MIN(xScale, yScale);
     }
     
-    
     CGRect frameToCenter = CGRectZero;
     if (xScale >= yScale) {
         frameToCenter = CGRectMake(0, 0, imageSize.width * maxScale, imageSize.height * maxScale);

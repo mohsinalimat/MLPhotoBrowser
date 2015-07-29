@@ -327,7 +327,6 @@ static NSInteger const ZLPickerProgressViewH = 50;
     }
     self.zoomScale = self.minimumZoomScale;
     
-    
     // If we're zooming to fill then centralise
     if (self.zoomScale != minScale) {
         if (yScale >= xScale) {
