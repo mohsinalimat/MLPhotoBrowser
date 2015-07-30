@@ -212,12 +212,6 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
     [self setPageLabelPage:self.currentPage];
     if (self.currentPage >= 0) {
         CGFloat attachVal = 0;
-        if (self.currentPage == [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1 && self.currentPage > 0) {
-            attachVal = ZLPickerColletionViewPadding;
-        }
-        
-//        self.collectionView.ml_x = 0;
-//        self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.ml_width, 0);
         if (self.currentPage == self.photos.count - 1) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.frame.size.width, 0);
@@ -338,7 +332,7 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
 - (void)showPickerVc:(UIViewController *)vc{
     __weak typeof(vc)weakVc = vc;
     if (weakVc != nil) {
-        [weakVc presentViewController:self animated:YES completion:nil];
+        [weakVc presentViewController:self animated:NO completion:nil];
     }
 }
 
