@@ -211,7 +211,6 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
     
     [self setPageLabelPage:self.currentPage];
     if (self.currentPage >= 0) {
-        CGFloat attachVal = 0;
         if (self.currentPage == self.photos.count - 1) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.collectionView.contentOffset = CGPointMake(self.currentPage * self.collectionView.frame.size.width, 0);

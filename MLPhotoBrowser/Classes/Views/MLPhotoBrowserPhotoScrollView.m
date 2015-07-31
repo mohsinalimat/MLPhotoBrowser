@@ -93,9 +93,15 @@ static NSInteger const ZLPickerProgressViewH = 50;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 0){
-        UIImageWriteToSavedPhotosAlbum(_photoImageView.image, nil, nil, nil);
-        if (_photoImageView.image) {
-            [self showMessageWithText:@"保存成功"];
+        if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+            UIImageWriteToSavedPhotosAlbum(_photoImageView.image, nil, nil, nil);
+            if (_photoImageView.image) {
+                [self showMessageWithText:@"保存成功"];
+            }
+        }else{
+            if (_photoImageView.image) {
+                [self showMessageWithText:@"没有用户权限,保存失败"];
+            }
         }
     }
 }
