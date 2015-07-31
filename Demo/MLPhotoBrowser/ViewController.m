@@ -17,9 +17,10 @@
 - (NSArray *)examples{
     if (!_examples) {
         _examples = @[
-                      @"Scale Browser",
+                      @"Scale Browser, 没有数据源传photos",
                       @"Fade Browser",
                       @"Show Signle Browser in Portrait",
+                      @"Scale Browser, 有数据源的用法",
                       ];
     }
     return _examples;

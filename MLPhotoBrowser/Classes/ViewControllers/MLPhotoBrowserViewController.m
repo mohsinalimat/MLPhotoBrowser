@@ -35,7 +35,7 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
 // 单击时执行销毁的block
 @property (nonatomic , copy) ZLPickerBrowserViewControllerTapDisMissBlock disMissBlock;
 // 装着所有的图片模型
-@property (nonatomic , strong) NSMutableArray *photos;
+//@property (nonatomic , strong) NSMutableArray *photos;
 // 当前提供的分页数
 @property (nonatomic , assign) NSInteger currentPage;
 
@@ -45,13 +45,19 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
 
 #pragma mark - getter
 #pragma mark photos
-- (NSMutableArray *)photos{
+- (NSArray *)photos{
     if (!_photos) {
-        _photos = [NSMutableArray array];
-        [_photos addObjectsFromArray:[self getPhotos]];
+        _photos = [self getPhotos];
     }
     return _photos;
 }
+//- (NSMutableArray *)photos{
+//    if (!_photos) {
+//        _photos = [NSMutableArray array];
+//        [_photos addObjectsFromArray:[self getPhotos]];
+//    }
+//    return _photos;
+//}
 
 #pragma mark collectionView
 - (UICollectionView *)collectionView{
@@ -144,7 +150,9 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
 #pragma mark - Life cycle
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    NSAssert(self.dataSource, @"你没成为数据源代理");
+    if (!self.photos.count) {
+        NSAssert(self.dataSource, @"你没成为数据源代理 或者 没传self.photos");
+    }
     
     if (self.status != UIViewAnimationAnimationStatusNotAnimation){
         [self showToView];
@@ -152,6 +160,8 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
 }
 
 - (void)dealloc{
+    self.disMissBlock = nil;
+    self.photos = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -228,7 +238,7 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section];
+    return ([self isDataSourceElsePhotos])?[self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section]:self.photos.count;
 }
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -294,16 +304,24 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
         tempF.size.width = [UIScreen mainScreen].bounds.size.width;
     }
     
-    if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
-        tempF.origin.x = 0;
+    if ([self isDataSourceElsePhotos]) {
+        if ((currentPage < [self.dataSource photoBrowser:self numberOfItemsInSection:self.currentIndexPath.section] - 1) || self.photos.count == 1) {
+            tempF.origin.x = 0;
+        }else{
+            tempF.origin.x = -ZLPickerColletionViewPadding;
+        }
     }else{
-        tempF.origin.x = -ZLPickerColletionViewPadding;
+        if ((currentPage < self.photos.count - 1) || self.photos.count == 1) {
+            tempF.origin.x = 0;
+        }else{
+            tempF.origin.x = -ZLPickerColletionViewPadding;
+        }
     }
     self.collectionView.frame = tempF;
 }
 
 -(void)setPageLabelPage:(NSInteger)page{
-    self.pageLabel.text = [NSString stringWithFormat:@"%ld / %ld",page + 1, self.photos.count];
+    self.pageLabel.text = [NSString stringWithFormat:@"%d / %d",page + 1, self.photos.count];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -361,11 +379,16 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
             [self.delegate photoBrowser:self removePhotoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         }
         
-        [self.photos removeObjectAtIndex:self.currentPage];
-        
         if (self.currentPage >= self.photos.count) {
             self.currentPage--;
         }
+        
+        if (self.photos.count > self.currentPage && self.dataSource != nil) {
+            NSMutableArray *photos = [NSMutableArray arrayWithArray:self.photos];
+            [photos removeObjectAtIndex:self.currentPage];
+            self.photos = photos;
+        }
+        
         
         UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:self.currentIndexPath.section]];
         if (cell) {
@@ -403,6 +426,10 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (BOOL)isDataSourceElsePhotos{
+    return self.dataSource != nil;
+}
+
 - (void)showToView{
     UIView *mainView = [[UIView alloc] init];
     mainView.backgroundColor = [UIColor blackColor];
@@ -411,7 +438,13 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
     
     UIImageView *toImageView = nil;
     if(self.status == UIViewAnimationAnimationStatusZoom){
-        toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
+        
+        if ([self isDataSourceElsePhotos]) {
+            toImageView = (UIImageView *)[[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] toView];
+        }else{
+            toImageView = (UIImageView *)[self.photos[self.currentIndexPath.row] toView];
+        }
+        
     }
     
     if (![toImageView isKindOfClass:[UIImageView class]] && self.status != UIViewAnimationAnimationStatusFade) {
@@ -426,7 +459,11 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
     mainView.clipsToBounds = YES;
     
     if (self.status == UIViewAnimationAnimationStatusFade){
-        imageView.image = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+        if ([self isDataSourceElsePhotos]) {
+            imageView.image = [[self.dataSource photoBrowser:self photoAtIndexPath:self.currentIndexPath] thumbImage];
+        }else{
+            imageView.image = [self.photos[self.currentIndexPath.row] thumbImage];
+        }
     }else{
         imageView.image = toImageView.image;
     }
@@ -447,11 +484,22 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
         [weakSelf dismissViewControllerAnimated:NO completion:nil];
         
         // 不是淡入淡出
-        if(self.status == UIViewAnimationAnimationStatusZoom){
-            imageView.image = [(UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView] image];
+        if(weakSelf.status == UIViewAnimationAnimationStatusZoom){
+            
+            if ([weakSelf isDataSourceElsePhotos]) {
+                imageView.image = [(UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView] image];
+            }else{
+                imageView.image = [(UIImageView *)[weakSelf.photos[page] toView] image];
+            }
+            
             imageView.frame = [weakSelf setMaxMinZoomScalesForCurrentBounds:imageView];
             
-            UIImageView *toImageView2 = (UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView];
+            UIImageView *toImageView2 = nil;
+            if ([weakSelf isDataSourceElsePhotos]) {
+                toImageView2 = (UIImageView *)[[weakSelf.dataSource photoBrowser:weakSelf photoAtIndexPath:[NSIndexPath indexPathForItem:page inSection:weakSelf.currentIndexPath.section]] toView];
+            }else{
+                toImageView2 = (UIImageView *)[weakSelf.photos[page] toView];
+            }
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
         }
         

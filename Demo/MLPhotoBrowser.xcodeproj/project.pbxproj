@@ -20,6 +20,7 @@
 		481E7DFE1AEE4A99008A7986 /* MLPhotoBrowserPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 481E7DF31AEE4A99008A7986 /* MLPhotoBrowserPhotoView.m */; };
 		481E7DFF1AEE4A99008A7986 /* MLPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 481E7DF41AEE4A99008A7986 /* MLPhotoBrowser.bundle */; };
 		481E7E051AEE4C76008A7986 /* UIImage+MLBrowserPhotoImageForBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 481E7E041AEE4C76008A7986 /* UIImage+MLBrowserPhotoImageForBundle.m */; };
+		488203181B6B96FD00D36AA7 /* Example4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 488203171B6B96FD00D36AA7 /* Example4ViewController.m */; };
 		48CE80811AEDE3F700AD85BB /* Example1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CE80801AEDE3F700AD85BB /* Example1ViewController.m */; };
 		48D198F71AED379500762BC2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D198F61AED379500762BC2 /* main.m */; };
 		48D198FA1AED379500762BC2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D198F91AED379500762BC2 /* AppDelegate.m */; };
@@ -68,6 +69,8 @@
 		481E7DF41AEE4A99008A7986 /* MLPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MLPhotoBrowser.bundle; sourceTree = "<group>"; };
 		481E7E031AEE4C76008A7986 /* UIImage+MLBrowserPhotoImageForBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+MLBrowserPhotoImageForBundle.h"; sourceTree = "<group>"; };
 		481E7E041AEE4C76008A7986 /* UIImage+MLBrowserPhotoImageForBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MLBrowserPhotoImageForBundle.m"; sourceTree = "<group>"; };
+		488203161B6B96FD00D36AA7 /* Example4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example4ViewController.h; sourceTree = "<group>"; };
+		488203171B6B96FD00D36AA7 /* Example4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example4ViewController.m; sourceTree = "<group>"; };
 		48CE807F1AEDE3F700AD85BB /* Example1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Example1ViewController.h; sourceTree = "<group>"; };
 		48CE80801AEDE3F700AD85BB /* Example1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Example1ViewController.m; sourceTree = "<group>"; };
 		48D198F11AED379500762BC2 /* MLPhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLPhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +179,8 @@
 				481E7DC71AEE292A008A7986 /* Example2ViewController.m */,
 				481E7DCC1AEE293D008A7986 /* Example3ViewController.h */,
 				481E7DCD1AEE293D008A7986 /* Example3ViewController.m */,
+				488203161B6B96FD00D36AA7 /* Example4ViewController.h */,
+				488203171B6B96FD00D36AA7 /* Example4ViewController.m */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -405,6 +410,7 @@
 				481E7DF61AEE4A99008A7986 /* MLPhotoBrowserDatas.m in Sources */,
 				481E7DFC1AEE4A99008A7986 /* MLPhotoBrowserPhotoImageView.m in Sources */,
 				48CE80811AEDE3F700AD85BB /* Example1ViewController.m in Sources */,
+				488203181B6B96FD00D36AA7 /* Example4ViewController.m in Sources */,
 				481E7DC81AEE292A008A7986 /* Example2ViewController.m in Sources */,
 				481E7DF91AEE4A99008A7986 /* MLPhotoBrowserSignleViewController.m in Sources */,
 				481E7DFD1AEE4A99008A7986 /* MLPhotoBrowserPhotoScrollView.m in Sources */,

@@ -87,6 +87,8 @@ typedef NS_ENUM(NSUInteger, UIViewAnimationAnimationStatus) {
 @property (strong,nonatomic) NSIndexPath *currentIndexPath;
 
 // @optional
+// 传入photos, 可以省略数据源 @[MLPhotoBrowserPhoto,MLPhotoBrowserPhoto,...]
+@property (strong,nonatomic) NSArray *photos;
 // 是否可以编辑（删除照片）
 @property (assign,getter=isEditing,nonatomic) BOOL editing;
 // 动画status (放大缩小/淡入淡出/旋转)

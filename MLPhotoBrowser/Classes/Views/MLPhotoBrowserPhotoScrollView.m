@@ -20,11 +20,11 @@ static NSInteger const ZLPickerProgressViewH = 50;
 // Private methods and properties
 @interface MLPhotoBrowserPhotoScrollView ()<UIActionSheetDelegate> {
     MLPhotoBrowserPhotoView *_tapView; // for background taps
-    MLPhotoBrowserPhotoImageView *_photoImageView;
 }
 
 @property (assign,nonatomic) CGFloat progress;
 // 加载完成
+@property (strong,nonatomic) MLPhotoBrowserPhotoImageView *photoImageView;
 @property (assign,nonatomic) BOOL isLoadingDone;
 @property (strong,nonatomic) DACircularProgressView *progressView;
 
@@ -139,8 +139,8 @@ static NSInteger const ZLPickerProgressViewH = 50;
         NSRange photoRange = [photo.photoURL.absoluteString rangeOfString:@"assets-library"];
         if (photoRange.location != NSNotFound){
             [[MLPhotoBrowserDatas defaultPicker] getAssetsPhotoWithURL:photo.photoURL callBack:^(UIImage *obj) {
-                self.isLoadingDone = YES;
-                _photoImageView.image = obj;
+                weakSelf.isLoadingDone = YES;
+                weakSelf.photoImageView.image = obj;
                 [weakSelf displayImage];
             }];
         }else{
@@ -154,7 +154,7 @@ static NSInteger const ZLPickerProgressViewH = 50;
             _photoImageView.contentMode = UIViewContentModeScaleAspectFit;
             _photoImageView.frame = [self setMaxMinZoomScalesForCurrentBounds:_photoImageView];
             
-            self.progress = 0.01;
+            weakSelf.progress = 0.01;
             // 网络URL
             [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 self.progress = (double)receivedSize / expectedSize;

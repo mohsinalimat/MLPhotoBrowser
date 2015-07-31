@@ -37,7 +37,6 @@
 	return self;
 }
 
-
 #pragma mark -监听手势
 - (void) addGesture{
     self.contentMode = UIViewContentModeScaleAspectFit;
